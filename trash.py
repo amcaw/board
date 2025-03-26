@@ -16,7 +16,7 @@ def main():
         print(json.dumps({"error": f"Missing environment variable: {str(e)}"}, indent=2))
         return
 
-    # Use tomorrow's date for both fromDate and untilDate
+    # Use tomorrow's date for both fromDate and untilDate 
     tomorrow = datetime.now() + timedelta(days=1)
     date_str = tomorrow.strftime('%Y-%m-%d')
     
