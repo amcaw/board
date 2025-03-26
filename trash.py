@@ -68,7 +68,7 @@ def main():
         "to_do": icons_str
     }]
     
-    with open("output.json", "w", encoding="utf-8") as f:
+    with open("trash.json", "w", encoding="utf-8") as f:
         json.dump(output_array, f, indent=2, ensure_ascii=False)
     
     print(json.dumps(output_array, indent=2, ensure_ascii=False))
