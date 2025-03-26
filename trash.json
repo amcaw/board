@@ -1,6 +1,6 @@
 [
   {
     "name": "trash",
-    "to_do": "Papiers-cartons"
+    "to_do": "<i class='fas fa-trash'></i>
   }
 ]
