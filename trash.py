@@ -4,7 +4,6 @@ import json
 from datetime import datetime, timedelta
 
 def main():
-    # Retrieve sensitive configuration from environment variables
     try:
         API_URL = os.environ['API_URL']
         ZIPCODE_ID = os.environ['ZIPCODE_ID']
@@ -12,6 +11,7 @@ def main():
         HOUSE_NUMBER = os.environ['HOUSE_NUMBER']
         X_SECRET = os.environ['X_SECRET']
         X_CONSUMER = os.environ['X_CONSUMER']
+        REFERER = os.environ['REFERER']
     except KeyError as e:
         print(json.dumps({"error": f"Missing environment variable: {str(e)}"}, indent=2))
         return
@@ -34,7 +34,7 @@ def main():
         'x-consumer': X_CONSUMER,
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
         'Accept': 'application/json, text/plain, */*',
-        'Referer': 'https://recycleapp.be/home'
+        'Referer': REFERER
     }
     
     try:
