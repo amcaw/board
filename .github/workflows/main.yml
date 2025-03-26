@@ -30,7 +30,7 @@ jobs:
         run: pip install requests
 
       - name: Run the script
-        run: python your_script.py
+        run: python trash.py
 
       - name: Commit files
         run: |
