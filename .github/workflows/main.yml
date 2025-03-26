@@ -15,6 +15,7 @@ jobs:
       HOUSE_NUMBER: ${{ secrets.HOUSE_NUMBER }}
       X_SECRET: ${{ secrets.X_SECRET }}
       X_CONSUMER: ${{ secrets.X_CONSUMER }}
+      REFERER: ${{ secrets.REFERER }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
