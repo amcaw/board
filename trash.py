@@ -63,6 +63,10 @@ def main():
     
     icons_str = " ".join(icons)
     
+    # If no icons are collected, display the "trash-can-slash" icon
+    if not icons_str:
+        icons_str = '<i class="fa-solid fa-trash-can-slash"></i>'
+    
     output_array = [{
         "name": "trash",
         "to_do": icons_str
