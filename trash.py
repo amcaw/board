@@ -63,9 +63,9 @@ def main():
     
     icons_str = " ".join(icons)
     
-    # If no icons are collected, display the "trash-can-slash" icon using single quotes
+    # If no icons are collected, display the "fa-ban" icon using single quotes
     if not icons_str:
-        icons_str = "<i class='fa-solid fa-trash-can-slash'></i>"
+        icons_str = "<i class='fa-solid fa-ban'></i>"
     
     output_array = [{
         "name": "trash",
