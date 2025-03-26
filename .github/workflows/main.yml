@@ -1,0 +1,27 @@
+name: Run Script
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    env:
+      API_URL: ${{ secrets.API_URL }}
+      ZIPCODE_ID: ${{ secrets.ZIPCODE_ID }}
+      STREET: ${{ secrets.STREET }}
+      HOUSE_NUMBER: ${{ secrets.HOUSE_NUMBER }}
+      X_SECRET: ${{ secrets.X_SECRET }}
+      X_CONSUMER: ${{ secrets.X_CONSUMER }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run the script
+        run: python trash.py
