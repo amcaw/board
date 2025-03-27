@@ -1,4 +1,4 @@
-name: Run Script
+name: Run Scripts
 
 on:
   schedule:
@@ -30,13 +30,23 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run the script
+      - name: Run trash script
         run: python trash.py
+        
+      - name: Run status conversion script
+        run: |
+          # Check if planning.json exists
+          if [ -f planning.json ]; then
+            echo "Converting today's status from planning.json"
+            python status.py planning.json
+          else
+            echo "Warning: planning.json file not found"
+          fi
 
       - name: Commit files
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add --all
-          git commit -am "add data" || echo "No changes to commit"
+          git commit -am "Update data and schedule status" || echo "No changes to commit"
           git push
