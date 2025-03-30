@@ -4,53 +4,49 @@ import datetime
 import os
 import sys
 
-def convert_schedule(input_file="planning.json"):
-    """
-    Reads planning.json file, extracts today's and tomorrow's status,
-    and creates a schedule.json file with appropriate Font Awesome icons.
-    """
-    output_file = "schedule.json"
-    
-    today = datetime.date.today()
-    tomorrow = today + datetime.timedelta(days=1)
+def get_icon_for_date(planning, date_str):
+    """Return the icon HTML for a given date string based on the planning."""
+    icon_mapping = {
+        "in": "<i class='fa-solid fa-house'></i>",
+        "out": "<i class='fa-solid fa-briefcase'></i>",
+        "off": "<i class='fa-solid fa-umbrella-beach'></i>"
+    }
+    status = planning.get(date_str, None)
+    if not status:
+        return None, None
+    return icon_mapping.get(status, ""), status
 
-    today_str = today.isoformat()
-    tomorrow_str = tomorrow.isoformat()
-    
+def convert_schedule(input_file="planning.json"):
     try:
+        # Load planning JSON
         with open(input_file, 'r') as f:
             planning = json.load(f)
 
-        icon_mapping = {
-            "in": "<i class='fa-solid fa-house'></i>",
-            "out": "<i class='fa-solid fa-briefcase'></i>",
-            "off": "<i class='fa-solid fa-umbrella-beach'></i>"
-        }
+        # Prepare dates
+        today = datetime.date.today()
+        tomorrow = today + datetime.timedelta(days=1)
 
-        # Get today's and tomorrow's status
-        today_status = planning.get(today_str, "")
-        tomorrow_status = planning.get(tomorrow_str, "")
-        
-        # Get icons
-        today_icon = icon_mapping.get(today_status, "")
-        tomorrow_icon = icon_mapping.get(tomorrow_status, "")
-        
-        # Combine the icons
-        combined_icons = today_icon + tomorrow_icon
+        # Convert both dates
+        for i, date in enumerate([today, tomorrow], start=1):
+            date_str = date.isoformat()
+            icon, status = get_icon_for_date(planning, date_str)
+            if icon is None:
+                print(f"No schedule found for {date_str}")
+                continue
 
-        output_data = [
-            {
-                "name": "schedule",
-                "status": combined_icons
-            }
-        ]
-        
-        with open(output_file, 'w') as f:
-            json.dump(output_data, f, indent=2)
-        
-        print(f"Successfully created {output_file}")
-        print(f"Today's status: {today_status} → {today_icon}")
-        print(f"Tomorrow's status: {tomorrow_status} → {tomorrow_icon}")
+            output_data = [
+                {
+                    "name": "schedule",
+                    "status": icon
+                }
+            ]
+
+            output_filename = f"{i}.json"
+            with open(output_filename, 'w') as out_f:
+                json.dump(output_data, out_f, indent=2)
+
+            print(f"Created {output_filename} for {date_str} ({status})")
+
         return True
 
     except FileNotFoundError:
@@ -65,5 +61,4 @@ def convert_schedule(input_file="planning.json"):
 
 if __name__ == "__main__":
     input_file = sys.argv[1] if len(sys.argv) > 1 else "planning.json"
-    print(f"Using input file: {input_file}")
     convert_schedule(input_file)
