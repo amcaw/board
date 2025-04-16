@@ -1,6 +1,6 @@
 [
   {
     "name": "trash",
-    "to_do": "<i class='fas fa-trash'></i>"
+    "to_do": "<i class='fa-solid fa-ban'></i>"
   }
 ]
