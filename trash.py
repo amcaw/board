@@ -31,7 +31,7 @@ def main():
 
     # Préparation de la date de demain
     tomorrow = datetime.now()
-    date_str = tomorrow.strftime('%Y-%m-%d')
+    date_str = tomorrow.strftime('%Y-%m-%d') + timedelta(days=-1)
 
     params = {
         'zipcodeId':    ZIPCODE_ID,
