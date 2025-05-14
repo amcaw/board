@@ -17,7 +17,7 @@ def main():
         return
 
     # Use tomorrow's date for both fromDate and untilDate 
-    tomorrow = datetime.now()
+    tomorrow = datetime.now() + timedelta(days=1)
     date_str = tomorrow.strftime('%Y-%m-%d')
     
     params = {
