@@ -30,7 +30,7 @@ def main():
         return
 
 
-    yesterday_dt = datetime.now() - timedelta(days=1)
+    yesterday_dt = datetime.now() - timedelta(days=2)
 
 # Puis on le convertit en chaîne ISO YYYY-MM-DD
     date_str = yesterday_dt.strftime('%Y-%m-%d')
