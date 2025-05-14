@@ -29,9 +29,11 @@ def main():
         print(json.dumps({"error": f"Missing environment variable: {str(e)}"}, indent=2))
         return
 
-    # Préparation de la date de demain
-    tomorrow = datetime.now()
-    date_str = tomorrow.strftime('%Y-%m-%d') - timedelta(days=1)
+
+    yesterday_dt = datetime.now() - timedelta(days=1)
+
+# Puis on le convertit en chaîne ISO YYYY-MM-DD
+    date_str = yesterday_dt.strftime('%Y-%m-%d')
 
     params = {
         'zipcodeId':    ZIPCODE_ID,
