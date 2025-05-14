@@ -30,7 +30,7 @@ def main():
         return
 
     # Préparation de la date de demain
-    tomorrow = datetime.now() + timedelta(days=1)
+    tomorrow = datetime.now()
     date_str = tomorrow.strftime('%Y-%m-%d')
 
     params = {
