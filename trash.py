@@ -16,8 +16,7 @@ def main():
         print(json.dumps({"error": f"Missing environment variable: {str(e)}"}, indent=2))
         return
 
-    # Use tomorrow's date for both fromDate and untilDate
-    tomorrow = datetime.now() + timedelta(days=1)
+    tomorrow = datetime.now() - timedelta(days=1)
     date_str = tomorrow.strftime('%Y-%m-%d')
     
     params = {
@@ -41,16 +40,26 @@ def main():
         response = requests.get(API_URL, params=params, headers=headers, timeout=5)
         response.raise_for_status()
         data = response.json()
-        
-        # DEBUG: Print the entire response data
-        print("DEBUG - Full API Response:")
-        print(json.dumps(data, indent=2, ensure_ascii=False))
-        
     except requests.exceptions.RequestException as e:
         data = {"error": str(e)}
     
-    # DEBUG: Print how many items are in the response
-    print(f"DEBUG - Number of items: {len(data.get('items', []))}")
+    # Debugging: Check for the specific scenario - both waste types present
+    waste_types = []
+    for item in data.get("items", []):
+        fraction = item.get("fraction", {})
+        name_fr = fraction.get("name", {}).get("fr", "")
+        waste_types.append(name_fr)
+    
+    print(f"DEBUG - All waste types: {waste_types}")
+    
+    has_ordures = "Ordures ménagères résiduelles" in waste_types
+    has_dechets = "Déchets organiques" in waste_types
+    
+    print(f"DEBUG - Has Ordures ménagères résiduelles: {has_ordures}")
+    print(f"DEBUG - Has Déchets organiques: {has_dechets}")
+    
+    if has_ordures and has_dechets:
+        print("DEBUG - SPECIAL CASE: Both waste types present together!")
     
     # Mapping of French waste types to Font Awesome icon markup
     icon_map = {
@@ -60,38 +69,22 @@ def main():
     }
     
     icons = []
-    
-    # DEBUG: Print all the waste types before processing
-    print("DEBUG - All waste types found in data:")
-    for item in data.get("items", []):
-        fraction = item.get("fraction", {})
-        name_fr = fraction.get("name", {}).get("fr", "")
-        print(f"DEBUG - Found waste type: '{name_fr}'")
-    
     for item in data.get("items", []):
         fraction = item.get("fraction", {})
         name_fr = fraction.get("name", {}).get("fr", "")
         
-        # DEBUG: Check if name matches our key literals exactly
-        if name_fr == "Ordures ménagères résiduelles":
-            print("DEBUG - Exact match found for 'Ordures ménagères résiduelles'")
-        elif name_fr == "Déchets organiques":
-            print("DEBUG - Exact match found for 'Déchets organiques'")
+        print(f"DEBUG - Processing item: '{name_fr}'")
         
         # Skip "Déchets organiques"
         if name_fr == "Déchets organiques":
-            print("DEBUG - Skipping 'Déchets organiques'")
+            print(f"DEBUG - Skipping: '{name_fr}'")
             continue
-            
-        print(f"DEBUG - Looking up icon for: '{name_fr}'")
+        
         if name_fr in icon_map:
-            print(f"DEBUG - Found icon for: '{name_fr}'")
+            print(f"DEBUG - Adding icon for: '{name_fr}'")
             icons.append(icon_map[name_fr])
-        else:
-            print(f"DEBUG - No icon mapping for: '{name_fr}'")
     
-    # DEBUG: Show what icons were collected
-    print(f"DEBUG - Collected icons: {icons}")
+    print(f"DEBUG - Final icons list: {icons}")
     
     icons_str = " ".join(icons)
     print(f"DEBUG - Joined icons string: '{icons_str}'")
