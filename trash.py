@@ -16,7 +16,7 @@ def main():
         print(json.dumps({"error": f"Missing environment variable: {str(e)}"}, indent=2))
         return
 
-    tomorrow = datetime.now() - timedelta(days=1)
+    tomorrow = datetime.now()
     date_str = tomorrow.strftime('%Y-%m-%d')
     
     params = {
